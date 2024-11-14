@@ -32,18 +32,19 @@ function cartList(){
                             <span class="startPrice"${item.is_sale ? 'style=text-decoration:line-through;' : ''}">&yen;${item.price}</span>
                             ${item.is_sale ? `<span class="salePrice">&yen;${(item.price * (parseInt(item.sale_type)/100)).toFixed(2)}</span>` : ''}
                         </div>
-                        <div class="count"><button>+</button><input type="text" value="${item.cart_number}"><button>-</button></div>
+                        <div class="count"><button class='addNum'>+</button><input type="text" value="${item.cart_number}" class='cartNum'><button class='minusNum'>-</button></div>
                         <span class="allPrice">&yen;${item.is_sale ? `${(item.price * (parseInt(item.sale_type)/100) * item.cart_number).toFixed(2)}` : `${(item.price * item.cart_number).toFixed(2)}`}</span>
                         <button class="delete" data-delete=${item.goods_id}>删除</button>
                     </div>`
         }
         str += `<footer><span>总计${totalNum}</span><button class="clearCart">清空购物车</button>
-        <span>总价:${allPrice.toFixed(2)}</span></footer>`
+        <span>总价:${allPrice.toFixed(2)}</span><button class="deleteSelect">删除所选商品</button><button class="pay">支付</button></footer>`
         document.querySelector('section').innerHTML = str;
     })
 }
 cartList();
 var section = document.querySelector('section');
+var cartNum = document.querySelector('.cartNum')
 function cartDelete(){
     section.onclick = function(event){
         if(event.target.className === 'delete'){
@@ -61,7 +62,7 @@ function cartDelete(){
                 cartList()
             })
         }
-        if(event.target.className = "selectGoods"){
+        if(event.target.className === "selectGoods"){
             event.target.checked = !event.target.checked
             axios.post('/cart/select',{
                 id: localStorage.getItem('id'),
@@ -73,11 +74,88 @@ function cartDelete(){
                 }
             }).then(res => {
                 if(res.data.code == 1){
-                    console.log(res)
                     // alert('操作成功')
                     cartList()
                 }
             })
+        }
+        if(event.target.className === 'addNum'){
+            axios.post('./cart/number',{
+                id: localStorage.getItem('id'),
+                goodsId:event.target.parentNode.parentNode.children[0].dataset.goodsid,
+                number:Number(event.target.parentNode.children[1].value) + 1
+            },{
+                headers:{
+                    'content-type':'application/x-www-form-urlencoded',
+                    'authorization':localStorage.getItem('token')
+                }
+            }).then(res => {
+                if(res.data.code != 1){
+                    console.log(res)
+                    return;
+                }
+                console.log(res)
+                cartList()
+            })
+        }
+        
+        if(event.target.className === 'minusNum'){
+            axios.post('./cart/number',{
+                id: localStorage.getItem('id'),
+                goodsId:event.target.parentNode.parentNode.children[0].dataset.goodsid,
+                number:Number(event.target.parentNode.children[1].value) - 1
+            },{
+                headers:{
+                    'content-type':'application/x-www-form-urlencoded',
+                    'authorization':localStorage.getItem('token')
+                }
+            }).then(res => {
+                if(res.data.code != 1){
+                    console.log(res)
+                    return;
+                }
+                cartList()
+            })
+        }
+        if(event.target.className === "allSelect"){
+            console.log(Number(event.target.checked))
+            axios.post('/cart/select/all',{
+                id:localStorage.getItem('id'),
+                type:Number(event.target.checked)
+            },{
+                headers:{
+                    'content-type':'application/x-www-form-urlencoded',
+                    'authorization':localStorage.getItem('token')
+                }
+            }).then(res => {
+                if(res.data.code != 1){
+                    alert('修改失败')
+                    return;
+                }
+                cartList()
+            })
+        }
+        if(event.target.className === 'pay'){
+            axios.post('/cart/pay',{
+                id: localStorage.getItem('id')
+            },{
+                headers:{
+                    'content-type':'application/x-www-form-urlencoded',
+                    'authorization':localStorage.getItem('token')
+                }
+            }).then(res => {
+                if(res.data.code != 1){
+                    alert('支付失败')
+                }
+                location.href = 'pay.html'
+            })
+        }
+        if(event.target.className === 'deleteSelect'){
+            async function deleteSelect(){
+                    let res = await axios.get('/cart/remove/select',{params:{id:localStorage.getItem('id')},headers:{'authorization':localStorage.getItem('token')}})
+                    cartList()
+            }
+            deleteSelect()
         }
     }
 }

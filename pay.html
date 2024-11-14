@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            width: 200px;
+        }
+        h1{
+            display: inline-block;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>请扫码付款</h1><span class="allPrice"></span><br>
+
+    <img src="./image/image.png" alt="">
+</body>
+<script src="./axios.js"></script>
+<script>
+    var allPrice = document.querySelector('.allPrice');
+    axios.defaults.baseURL = 'http://localhost:8888'
+    axios.get('/cart/list',{params:{id:localStorage.getItem('id')},headers:{
+        'authorization':localStorage.getItem('token')
+    }}).then(res => {
+        console.log(res)
+        var price = 0
+        res.data.cart.forEach(item => {
+            price += item.price * (parseInt(item.sale_type)/100) * item.cart_number
+        })
+        allPrice.innerHTML = '总价：' + price.toFixed(2) + '元'
+    })
+</script>
+</html>
