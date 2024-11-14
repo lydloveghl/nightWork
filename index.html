@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./font/iconfont.css">
+    <style>
+        h1{
+            width: 1438px;
+            margin: auto;
+            height: 30px;
+            border-bottom: 1px solid #ccc;
+            font-size: 20px;
+            line-height: 30px;
+            position: relative;
+        }
+        a{
+            text-decoration: none;
+            color: red;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        section{
+            margin:auto;
+            display: flex;
+            flex-wrap: wrap;
+            width: 1438px;
+            justify-content: start;
+            align-content: start;
+
+        }
+        section>div>span{
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 40px;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            height: 20px;
+            background-color: rgb(161, 11, 11);
+        }
+        section>div{
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 180px;
+            height: 300px;
+            float: left;
+            border: 1px solid #ccc;
+            position: relative;
+            cursor: pointer;
+        }
+        section>div>img{
+            width: 100%;
+        }
+        section>div>div>a>p{
+            display: -webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+        ul{
+            width: 1438px;
+            height: 50px;
+            margin: 10px auto;
+            list-style: none;
+            display: flex;
+            justify-content: start;
+            flex-wrap: wrap;
+            align-content: center;
+            background-color: coral;
+            color: #fff;
+        }
+        ul>li{
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        ul>li.active{
+            color: red;
+        }
+        ul>li:hover{
+            color: aqua;
+        }
+        nav{
+            width: 1438px;
+            margin: 5px auto;
+            font-size: 18px;
+        }
+        nav>span{
+            display: inline-block;
+            width: 40px;
+            height: 30px;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            background-color: coral;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        nav>span.active{
+            background-color: rosybrown;
+        }
+        section a{
+            color: #000;
+        }
+        input{
+            width:1438px;
+            height: 30px;
+            border:3px solid #ccc;
+            font-size: 18px;
+            text-indent: 5px;
+            border-radius: 5px;
+            margin:5px auto;
+            display: block;
+        }
+        span{
+            cursor: pointer;
+        }
+        aside{
+            width: 1438px;
+            height: 30px;
+            margin: 10px auto;
+        }
+        aside>span{
+            width: 90px;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            height: 30px;
+            background-color: violet;
+            display: inline-block;
+        }
+        footer{
+            width: 200px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        footer>span{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: block;
+            margin:10px auto;
+            text-align: center;
+            line-height: 20px;
+        }
+        b{
+            font-weight: normal;
+        }
+        h1::after{
+            float: right;
+            font-size: 40px;
+        }
+        h1>b{
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            color: #fff;
+            font-size: 15px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            display: inline-block;
+            position: absolute;
+            right: -10px;
+            top:0;
+            display: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="iconfont icon-gouwuche">您好,<a href="./login.html">请登录</a></h1>
+    <h1 class="iconfont icon-gouwuche"><b class="cartCircle"></b>欢迎<span></span></h1>
+    <ul>
+    </ul>
+    <nav>
+        筛选:<span class="sort_item" data-sort = 'sale'>折扣</span><span class="sort_item" data-sort = 'hot'>畅销</span>
+    </nav>
+    <aside class="rank">
+        排序:
+        <span class="rank_item" data-rank="ASC" data-method="id">综合升序</span>
+        <span class="rank_item" data-rank="DESC" data-method="id">综合降序</span>
+        <span class="rank_item" data-rank="ASC" data-method="price">价格升序</span>
+        <span class="rank_item" data-rank="DESC" data-method="price">价格降序</span>
+        <span class="rank_item" data-rank="ASC" data-method="sale">折扣升序</span>
+        <span class="rank_item" data-rank="DESC" data-method="sale">折扣降序</span>
+    </aside>
+    <input type="text" placeholder="请输入关键字">
+    <section></section>
+    <footer>
+        <span class="pageChange" data-page="down">&lt;</span>
+        <b></b>
+        <span class="pageChange" data-page="up">&gt;</span>
+        <select class="pageSelect">
+        </select>
+    </footer>
+</body>
+<script src="./axios.js"></script>
+<script src="./index.js"></script>
+</html>

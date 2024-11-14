@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./axios.js"></script>
+<script>
+    axios.defaults.baseURL = 'http://localhost:8888'
+    var id = location.search.slice(1).split('=')[1]
+    axios.get('goods/item',{
+        params:{
+            id:id*1
+        }
+    }).then(res => {
+        console.log(res)
+    })
+</script>
+</html>

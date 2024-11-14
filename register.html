@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        div{
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 50px auto 0;
+            background-color: #ccc;
+            border-radius: 50px
+        }
+        form{
+            width: 400px;
+            margin-bottom: 10px;
+        }
+        p{
+            margin-top: 10px;
+        }
+        input{
+            width: 400px;
+            height: 50px;
+            border: 0.5px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-indent: 10px;
+        }
+        input:nth-of-type(1){
+            margin-top:10px;
+        }
+        button{
+            width: 400px;
+            height: 50px;
+            background-image: linear-gradient(to right top,rgb(35, 189, 212),skyblue);
+            color: #fff;
+            font-size: 20px;
+        }
+        span{
+            display: inline-block;
+            height: 14px;
+            font-size: 14px;
+            color: rgb(209, 35, 35);
+            line-height: 14px;
+            margin-bottom: 4px;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>欢迎注册</h1>
+        <p>提示注册账号的同时系统会自动生成钱包</p>
+        <form action="">
+            <input type="text" placeholder="用户名">
+            <input type="password" placeholder="密码">
+            <input type="password" placeholder="密码">
+            <input type="text" placeholder="昵称">
+            <span></span>
+            <button>提交</button>
+        </form>
+    </div>
+</body>
+<script src="./axios.js"></script>
+<script>
+    var inputs = document.querySelectorAll('input')
+    var pointOut = document.querySelector('span')
+    var register = document.querySelector('form')
+    register.onsubmit = (event) => {
+        event.preventDefault();
+        var registerData = []
+        for(let i = 0; i < inputs.length; i++){
+            registerData.push(inputs[i].value)
+        }
+        if(registerData.some(item => item === '')) return pointOut.innerText = '请正确输入注册信息'
+        axios({
+            method:'post',
+            url:'http://localhost:8888/users/register',
+            headers:{
+                'content-type':'application/x-www-form-urlencoded'
+            },data:{
+                username:registerData[0],
+                password:registerData[1],
+                rpassword:registerData[2],
+                nickname:registerData[3]
+            }
+        }).then(res => {
+            if(res.data.code != 1) return pointOut.innerText = '注册失败'
+            alert('注册成功')
+            location.href = './login.html'
+        })
+    } 
+</script>
+</html>

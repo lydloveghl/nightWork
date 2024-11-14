@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            background-color: skyblue;
+        }
+        form{
+            background-color: #fff;
+            width: 500px;
+            height: 300px;
+            margin:100px auto;
+            border-radius: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            position: relative;
+        }
+        input{
+            width: 400px;
+            height: 50px;
+            border: 0.5px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-indent: 10px;
+        }
+        input:nth-of-type(1){
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        button{
+            width: 400px;
+            height: 50px;
+            background-image: linear-gradient(to right top,rgb(17, 79, 88),skyblue);
+            color: #fff;
+        }
+        a{
+            text-decoration: none;
+            color: #2e2727;
+            position: absolute;
+            right: 50px;
+            bottom: 20px;
+        }
+        span{
+            display: inline-block;
+            height: 9px;
+            font-size: 8px;
+            color: rgb(209, 35, 35);
+            line-height: 9px;
+            margin-bottom: 4px;
+
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+        <input type="text" placeholder="账号">
+        <input type="password" placeholder="密码">
+        <span></span>
+        <button type="submit">登录</button><a href="./register.html">去注册</a>
+    </form>
+</body>
+<script src="./axios.js"></script>
+<script>
+    var userName = document.querySelector('input[type="text"]');
+    var passWord = document.querySelector('input[type="password"]');
+    var logIn = document.querySelector('form')
+    var pointOut = document.querySelector('span')
+    logIn.onsubmit = (event) => {
+        event.preventDefault();
+        var userData = [userName.value,passWord.value]
+        if(userData.some(item => item === '')) return pointOut.innerText = '请正确输入账号密码'
+        axios({
+            method:'post',
+            url:'http://localhost:8888/users/login',
+            headers:{
+                'content-type':'application/x-www-form-urlencoded'
+            },data:{
+                username:userData[0],
+                password:userData[1]
+            }
+        }).then(res => {
+            if(res.data.code != 1){
+                pointOut.innerText = '账号或密码有误,请重新输入'
+                return;
+            }
+            localStorage.setItem('token',res.data.token);
+            localStorage.setItem('id',res.data.user.id)
+            alert('登录成功')
+            location.href = './index.html'
+        })
+    }
+</script>
+</html>
